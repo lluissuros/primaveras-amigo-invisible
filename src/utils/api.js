@@ -1,34 +1,33 @@
-const BASE_URL = "http://localhost:3001";
-const LOGIN_URL = `${BASE_URL}/users/login`;
-const SIGNUP_URL = `${BASE_URL}/users/signup`;
-const CONTACTS_URL = `${BASE_URL}/contacts`;
+const BASE_URL = "https://primaveras-server.herokuapp.com/";
+// const BASE_URL = "http://localhost:5000";
 
-export function login(username, password) {
+export function getConfessions() {
   // Get a token from api server using the fetch api
-  return makeAuthenticatedRequest(LOGIN_URL, null, {
-    method: "POST",
-    body: JSON.stringify({
-      username,
-      password
-    })
-  });
-}
-
-export function signup(username, password) {
-  // Get a token from api server using the fetch api
-  return makeAuthenticatedRequest(SIGNUP_URL, null, {
-    method: "POST",
-    body: JSON.stringify({
-      username,
-      password
-    })
-  });
-}
-
-export function getContacts(tocken) {
-  return makeAuthenticatedRequest(CONTACTS_URL, tocken, {
+  return makeAuthenticatedRequest(BASE_URL, null, {
     method: "GET"
-  }).then(responseData => responseData.contacts);
+  });
+}
+
+export function createConfession(text, userId = "userID MISSING") {
+  return makeAuthenticatedRequest(BASE_URL, null, {
+    method: "POST",
+    body: JSON.stringify({
+      text,
+      userId
+    })
+  });
+}
+
+export function __createConfession(text, userId = "userID MISSING") {
+  console.log("Posting request...");
+  fetch(BASE_URL, {
+    method: "post",
+    body: { text, userId }
+  })
+    .then(response => response.json())
+    .catch(e => {
+      throw new Error(e.message);
+    });
 }
 
 function makeAuthenticatedRequest(url, token, options) {
