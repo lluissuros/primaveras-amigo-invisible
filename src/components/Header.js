@@ -8,6 +8,7 @@ const HeaderToTop = styled.header`
   left: 0;
   width: 100%;
   margin: 12px 0px;
+  background: ${props => props.theme.black};
 `;
 
 const FlexContainer = styled.div`

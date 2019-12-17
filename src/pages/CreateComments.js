@@ -23,6 +23,8 @@ const TextArea = styled.textarea`
   min-height: 185px;
   min-width: 300px;
   font-size: 14px;
+  padding: 12px;
+  box-sizing: border-box;
 `;
 
 function CreateComments({ history }) {

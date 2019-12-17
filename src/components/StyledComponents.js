@@ -25,7 +25,7 @@ const Input = styled.input`
 
 const Button = styled.button`
   background: linear-gradient(to bottom, #e91e63, #5563c1);
-  border-color: #3f4eae;
+  border: none;
   border-radius: 3px;
   max-width: 200px;
   margin: 0px auto;
