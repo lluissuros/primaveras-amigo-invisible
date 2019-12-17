@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
-import AuthForm from "../components/AuthForm";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import styled from "styled-components";
+
 import {
   Card,
   Logo,
@@ -9,11 +12,20 @@ import {
   Button,
   Error
 } from "../components/StyledComponents";
+
 import { logout } from "../utils/AuthHelperMethods";
 import { getConfessions, createConfession } from "../utils/api";
 
+const TextArea = styled.textarea`
+  border: 2px solid lightgrey;
+  border-radius: 3px;
+  min-height: 120px;
+  font-size: 14px;
+`;
+
 function CreateComments({ history }) {
   const [error, setError] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
   const [confession, setConfession] = useState("");
   const [confessions, setConfessions] = useState([]);
 
@@ -28,17 +40,35 @@ function CreateComments({ history }) {
     history.push(`/`);
   };
 
+  const isValidText = () => {
+    return confession.split(" ").length > 5;
+  };
+
+  const notifySucces = (message = "no message") =>
+    toast(message, { type: toast.TYPE.SUCCESS });
+
+  const notifyError = (message = "no message") =>
+    toast(message, { type: toast.TYPE.ERROR });
+
   const handleSubmit = e => {
     e.preventDefault();
+    if (!isValidText()) {
+      notifyError("minim 5 paraules");
+      return;
+    }
+    setIsFetching(true);
     createConfession(confession)
       .then(createdConfession => {
+        notifySucces(createdConfession.text);
         console.log(createdConfession);
         getConfessions()
           .then(responseData => setConfessions(responseData))
-          .catch(e => setError(e.message));
+          .then(() => setConfession(""))
+          .catch(e => notifyError(e.message))
+          .then(() => setIsFetching(false));
       })
-      .catch(e => setError(e.message));
-    setConfession("");
+      .catch(e => notifyError(e.message))
+      .then(() => setIsFetching(false));
   };
 
   return (
@@ -46,17 +76,19 @@ function CreateComments({ history }) {
       <button onClick={() => handleLogout()}>logout</button>
       {error && <Error>{`error message: ${error} `}</Error>}
       <Card>
-        <div>Testing database: post something, and get it from db</div>
-        <form>
-          <textarea
+        <div>Escriu el que pensess</div>
+        <Form style={{ height: "300px", justifyContent: "space-around" }}>
+          <TextArea
             placeholder="your text"
             value={confession}
             onChange={e => {
               setConfession(e.target.value);
             }}
-          ></textarea>
-          <button onClick={handleSubmit}>submit</button>
-        </form>
+          ></TextArea>
+          <Button onClick={handleSubmit} disabled={isFetching}>
+            {isFetching ? "loading" : "submit"}
+          </Button>
+        </Form>
       </Card>
       <div>{JSON.stringify(confessions)}</div>
     </div>

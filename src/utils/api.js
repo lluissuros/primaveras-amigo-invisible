@@ -1,3 +1,5 @@
+import { getEncryptedUser, getDecryptedUser } from "./AuthHelperMethods";
+
 const BASE_URL = "https://primaveras-server.herokuapp.com/";
 // const BASE_URL = "http://localhost:5000";
 
@@ -9,11 +11,14 @@ export function getConfessions() {
 }
 
 export function createConfession(text, userId = "userID MISSING") {
+  const encryptedUserId = getEncryptedUser();
+  console.log("test encrypted userId", encryptedUserId);
+  console.log("test Dencrypted userId", getDecryptedUser(encryptedUserId));
   return makeAuthenticatedRequest(BASE_URL, null, {
     method: "POST",
     body: JSON.stringify({
       text,
-      userId
+      userId: encryptedUserId
     })
   });
 }

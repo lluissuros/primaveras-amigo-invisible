@@ -1,4 +1,5 @@
 //all of us are here hardcoded OMG
+// I want it to be the emails
 const credentials = [
   {
     username: "test1",

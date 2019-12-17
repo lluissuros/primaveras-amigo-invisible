@@ -1,4 +1,7 @@
 import credentials from "./dangerouslyHardcodedCredentials";
+import CryptoJS from "crypto-js";
+
+const DANGEROUSLY_HARDCODED_PASSPHRASE = "Secret Phassphrase";
 
 export function isLoggedIn() {
   if (checkStoredCredentials()) {
@@ -6,6 +9,28 @@ export function isLoggedIn() {
     return true;
   }
   throw new Error("invalid stored credentials");
+}
+
+export function getEncryptedUser() {
+  const username =
+    localStorage.getItem("primaveras_username") ||
+    sessionStorage.getItem("primaveras_username");
+  if (!username) {
+    throw new Error("no username to encrypt");
+  }
+  const encrypted = CryptoJS.AES.encrypt(
+    "lluissuros@gmail.com",
+    DANGEROUSLY_HARDCODED_PASSPHRASE
+  );
+  return encrypted.toString();
+}
+
+export function getDecryptedUser(encryptedUser) {
+  const decrypted = CryptoJS.AES.decrypt(
+    encryptedUser,
+    DANGEROUSLY_HARDCODED_PASSPHRASE
+  );
+  return decrypted.toString(CryptoJS.enc.Utf8);
 }
 
 function checkStoredCredentials() {
