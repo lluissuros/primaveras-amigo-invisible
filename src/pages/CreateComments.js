@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
+import Header from "../components/Header";
 
 import {
   Card,
@@ -10,16 +11,17 @@ import {
   Form,
   Input,
   Button,
-  Error
+  Error,
+  GradientBox
 } from "../components/StyledComponents";
 
 import { logout } from "../utils/AuthHelperMethods";
 import { getConfessions, createConfession } from "../utils/api";
 
 const TextArea = styled.textarea`
-  border: 2px solid lightgrey;
-  border-radius: 3px;
-  min-height: 120px;
+  background: transparent;
+  min-height: 185px;
+  min-width: 300px;
   font-size: 14px;
 `;
 
@@ -71,26 +73,31 @@ function CreateComments({ history }) {
       .then(() => setIsFetching(false));
   };
 
+  const isButtonDisabled = isFetching || !isValidText();
+
   return (
     <div>
-      <button onClick={() => handleLogout()}>logout</button>
+      <Header username="testUser" onLogout={() => handleLogout()}></Header>
       {error && <Error>{`error message: ${error} `}</Error>}
       <Card>
-        <div>Escriu el que pensess</div>
+        <h4>Escriu el que penses</h4>
         <Form style={{ height: "300px", justifyContent: "space-around" }}>
-          <TextArea
-            placeholder="your text"
-            value={confession}
-            onChange={e => {
-              setConfession(e.target.value);
-            }}
-          ></TextArea>
-          <Button onClick={handleSubmit} disabled={isFetching}>
+          <GradientBox>
+            <TextArea
+              placeholder="your text"
+              value={confession}
+              onChange={e => {
+                setConfession(e.target.value);
+              }}
+            ></TextArea>
+          </GradientBox>
+
+          <Button onClick={handleSubmit} disabled={isButtonDisabled}>
             {isFetching ? "loading" : "submit"}
           </Button>
         </Form>
       </Card>
-      <div>{JSON.stringify(confessions)}</div>
+      {/* <div>{JSON.stringify(confessions)}</div> */}
     </div>
   );
 }

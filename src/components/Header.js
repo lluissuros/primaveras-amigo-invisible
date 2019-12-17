@@ -1,25 +1,43 @@
 import React from "react";
 import styled from "styled-components";
-import { SmallButton } from "./StyledComponents";
+import { AlternativeButton } from "./StyledComponents";
 
-const Container = styled.header`
-  margin: 12px 24px;
+const HeaderToTop = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 12px 0px;
+`;
+
+const FlexContainer = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
 `;
 
 const Header = ({ username, onLogout }) => {
-  return username ? (
+  return (
     <React.Fragment>
-      <Container>
-        <h1 style={{ margin: "0px" }}>{`Welcome, ${username}`}</h1>
-        <SmallButton onClick={() => onLogout()}>LOGOUT</SmallButton>
-      </Container>
-      <div>
-        <hr />
-      </div>
+      <HeaderToTop>
+        <FlexContainer>
+          <h1 style={{ margin: "0px 12px" }}>{`Holi ${username}`}</h1>
+          <div>
+            <AlternativeButton
+              style={{ marginRight: "1rem" }}
+              onClick={() => onLogout()}
+            >
+              log out
+            </AlternativeButton>
+          </div>
+        </FlexContainer>
+
+        <div>
+          <hr />
+        </div>
+      </HeaderToTop>
     </React.Fragment>
-  ) : null;
+  );
 };
 
 export default Header;

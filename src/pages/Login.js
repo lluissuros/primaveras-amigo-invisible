@@ -9,7 +9,6 @@ function Login() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const handleLogin = (userName, password, rememberMe) => {
-    debugger;
     try {
       storeCredentials(userName, password, rememberMe);
       setError(null);

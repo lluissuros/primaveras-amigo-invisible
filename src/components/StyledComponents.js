@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Card = styled.div`
   box-sizing: border-box;
-  max-width: 410px;
+  //   min-width: 410px;
   margin: 24px auto;
   padding: 0 2rem;
   display: flex;
@@ -13,7 +13,7 @@ const Card = styled.div`
 const Form = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  //   height: 300px;
 `;
 
 const Input = styled.input`
@@ -24,15 +24,30 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  background: linear-gradient(to bottom, #6371c7, #5563c1);
+  background: linear-gradient(to bottom, #e91e63, #5563c1);
   border-color: #3f4eae;
   border-radius: 3px;
-  padding: 1rem;
+  max-width: 200px;
+  margin: 0px auto;
+  padding: 0.5rem;
   color: white;
   font-weight: 700;
-  width: 100%;
+  //   width: 100%;
   margin-bottom: 1rem;
   font-size: 0.8rem;
+  transition: 1s;
+
+  :disabled {
+    border: 1px solid #999999;
+    background: #cccccc;
+    color: #666666;
+    transition: 1s;
+  }
+`;
+
+const AlternativeButton = styled(Button)`
+  background: linear-gradient(to bottom, #e91e63, #ffdc00);
+  color: ${props => props.theme.black};
 `;
 
 const SmallButton = styled.button`
@@ -53,6 +68,35 @@ const SmallButton = styled.button`
   }
 `;
 
+const GradientBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin: auto;
+  max-width: 22em;
+
+  position: relative;
+  box-sizing: border-box;
+
+  color: #fff;
+  background: #000;
+  background-clip: padding-box; /* !importanté */
+  border: solid 5px transparent; /* !importanté */
+  border-radius: 1em;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    margin: -5px; /* !importanté */
+    border-radius: inherit; /* !importanté */
+    background: linear-gradient(to right, red, orange);
+  }
+`;
+
 const Logo = styled.img`
   height: 150px;
   width: 150px;
@@ -67,4 +111,14 @@ const Error = styled.div`
   border-radius: 4px;
 `;
 
-export { Form, Input, Button, SmallButton, Logo, Card, Error };
+export {
+  Form,
+  Input,
+  Button,
+  AlternativeButton,
+  SmallButton,
+  Logo,
+  Card,
+  Error,
+  GradientBox
+};

@@ -56,7 +56,6 @@ function credentialIsValid(username, password) {
 }
 
 export function storeCredentials(username, password, rememberMe) {
-  debugger;
   if (credentialIsValid(username, password)) {
     console.log("valid");
     if (rememberMe) {
