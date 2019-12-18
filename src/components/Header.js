@@ -18,12 +18,15 @@ const FlexContainer = styled.div`
   justify-content: space-between;
 `;
 
-const Header = ({ username, onLogout }) => {
+const Header = ({ username, onLogout, onClickInfo }) => {
   return (
     <React.Fragment>
       <HeaderToTop>
         <FlexContainer>
           <h1 style={{ margin: "0px 12px" }}>{`Holi ${username}`}</h1>
+          <div onClick={onClickInfo} style={{ fontSize: "29px" }}>
+            ℹ️
+          </div>
           <div>
             <AlternativeButton
               style={{ marginRight: "1rem" }}

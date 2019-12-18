@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import logoImg from "../img/logo_goldenspear.jpg";
+import logoImg from "../img/apple-icon-144x144.png";
+
 import {
   Card,
   Logo,

@@ -7,6 +7,8 @@ import { ThemeProvider, createGlobalStyle } from "styled-components";
 import PrivateRoute from "./PrivateRoute";
 import Login from "./pages/Login";
 import CreateComments from "./pages/CreateComments";
+import ReviewTest from "./pages/ReviewTest";
+import InfoPage from "./pages/InfoPage";
 
 toast.configure();
 console.log("toast configured");
@@ -78,10 +80,12 @@ function App() {
           <div>
             <Switch>
               <Route path="/login" component={Login} />
+              <Route path="/info" component={InfoPage} />
               <PrivateRoute
                 path="/createcommments"
                 component={CreateComments}
               />
+              <Route path="/reviewtest" component={ReviewTest}></Route>
               <Route component={Login} />
             </Switch>
           </div>

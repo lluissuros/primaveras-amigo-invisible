@@ -3,7 +3,8 @@ import { Link, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
-import Header from "../components/Header";
+import MoonLoader from "react-spinners/MoonLoader";
+import { css } from "@emotion/core";
 
 import {
   Card,
@@ -14,9 +15,15 @@ import {
   Error,
   GradientBox
 } from "../components/StyledComponents";
-
+import Header from "../components/Header";
 import { logout } from "../utils/AuthHelperMethods";
 import { getConfessions, createConfession } from "../utils/api";
+
+const overrideSpinner = css`
+  display: block;
+  margin: 90px auto;
+  border-color: red;
+`;
 
 const TextArea = styled.textarea`
   background: transparent;
@@ -67,7 +74,7 @@ function CreateComments({ history }) {
     setIsFetching(true);
     createConfession(confession)
       .then(createdConfession => {
-        notifySucces(createdConfession.text);
+        notifySucces(`missatge guardat, merci!  ${createdConfession.text}`);
         console.log(createdConfession);
         getConfessions()
           .then(responseData => setConfessions(responseData))
@@ -88,12 +95,18 @@ function CreateComments({ history }) {
     if (isValidText()) {
       return "👌 Comparteix-ho";
     }
-    return "✍️ Comparteix-ho";
+    return "✍️ Comparteix";
   };
 
   return (
     <div>
-      <Header username="testUser" onLogout={() => handleLogout()}></Header>
+      <Header
+        username="testUser"
+        onLogout={() => handleLogout()}
+        onClickInfo={() => {
+          history.push("/info");
+        }}
+      ></Header>
       {/* <HeaderPlaceholder></HeaderPlaceholder> */}
       {error && <Error>{`error message: ${error} `}</Error>}
       <Card style={{ margin: "90px auto" }}>
@@ -110,18 +123,28 @@ function CreateComments({ history }) {
             {butttonText()}
           </Button>
         </div>
-        {/* <Form style={{ height: "300px", justifyContent: "space-around" }}> */}
-        <Form>
-          <GradientBox>
-            <TextArea
-              placeholder="your text"
-              value={confession}
-              onChange={e => {
-                setConfession(e.target.value);
-              }}
-            ></TextArea>
-          </GradientBox>
-        </Form>
+
+        {isFetching ? (
+          <MoonLoader
+            css={overrideSpinner}
+            sizeUnit={"px"}
+            size={200}
+            color={"#ffc107"}
+            loading={isFetching}
+          />
+        ) : (
+          <Form>
+            <GradientBox>
+              <TextArea
+                placeholder="your text"
+                value={confession}
+                onChange={e => {
+                  setConfession(e.target.value);
+                }}
+              ></TextArea>
+            </GradientBox>
+          </Form>
+        )}
       </Card>
       {/* <div>{JSON.stringify(confessions)}</div> */}
     </div>

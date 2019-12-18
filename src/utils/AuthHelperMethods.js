@@ -11,6 +11,10 @@ export function isLoggedIn() {
   throw new Error("invalid stored credentials");
 }
 
+export function getUsers() {
+  return credentials.map(e => e.username);
+}
+
 export function getEncryptedUser() {
   const username =
     localStorage.getItem("primaveras_username") ||
@@ -19,7 +23,7 @@ export function getEncryptedUser() {
     throw new Error("no username to encrypt");
   }
   const encrypted = CryptoJS.AES.encrypt(
-    "lluissuros@gmail.com",
+    username,
     DANGEROUSLY_HARDCODED_PASSPHRASE
   );
   return encrypted.toString();
@@ -47,7 +51,6 @@ function checkStoredCredentials() {
 }
 
 function credentialIsValid(username, password) {
-  console.log(credentials);
   return credentials.find(
     userCredential =>
       userCredential.username === username &&
@@ -57,7 +60,7 @@ function credentialIsValid(username, password) {
 
 export function storeCredentials(username, password, rememberMe) {
   if (credentialIsValid(username, password)) {
-    console.log("valid");
+    console.log("valid credentials");
     if (rememberMe) {
       localStorage.setItem("primaveras_username", username);
       localStorage.setItem("primaveras_password", password);

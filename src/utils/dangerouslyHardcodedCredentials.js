@@ -6,6 +6,18 @@ const credentials = [
     password: "1234"
   },
   {
+    username: "xeniatest",
+    password: "1234"
+  },
+  {
+    username: "noetest",
+    password: "1234"
+  },
+  {
+    username: "lluissuros@gmail.com",
+    password: "1234"
+  },
+  {
     username: "test-lluis2",
     password: "1234"
   }

@@ -4,7 +4,7 @@ import AuthForm from "../components/AuthForm";
 import { Card } from "../components/StyledComponents";
 import { isLoggedIn, storeCredentials } from "../utils/AuthHelperMethods";
 
-function Login() {
+function Login({ history }) {
   const [error, setError] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -26,6 +26,9 @@ function Login() {
 
   return (
     <Card>
+      <div onClick={() => history.push("/info")} style={{ fontSize: "48px" }}>
+        ℹ️
+      </div>
       <AuthForm error={error} onConfirm={handleLogin} btnMessage="Log in" />
     </Card>
   );
