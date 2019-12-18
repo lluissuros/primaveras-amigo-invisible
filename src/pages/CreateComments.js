@@ -20,11 +20,15 @@ import { getConfessions, createConfession } from "../utils/api";
 
 const TextArea = styled.textarea`
   background: transparent;
-  min-height: 185px;
+  min-height: 190px;
   min-width: 300px;
   font-size: 14px;
   padding: 12px;
   box-sizing: border-box;
+`;
+
+const HeaderPlaceholder = styled.div`
+  height: 65px;
 `;
 
 function CreateComments({ history }) {
@@ -45,7 +49,7 @@ function CreateComments({ history }) {
   };
 
   const isValidText = () => {
-    return confession.split(" ").length > 5;
+    return confession.length > 5;
   };
 
   const notifySucces = (message = "no message") =>
@@ -57,7 +61,7 @@ function CreateComments({ history }) {
   const handleSubmit = e => {
     e.preventDefault();
     if (!isValidText()) {
-      notifyError("minim 5 paraules");
+      notifyError("minim 5 caracters");
       return;
     }
     setIsFetching(true);
@@ -77,13 +81,37 @@ function CreateComments({ history }) {
 
   const isButtonDisabled = isFetching || !isValidText();
 
+  const butttonText = () => {
+    if (isFetching) {
+      return "...enviant 🚀";
+    }
+    if (isValidText()) {
+      return "👌 Comparteix-ho";
+    }
+    return "✍️ Comparteix-ho";
+  };
+
   return (
     <div>
       <Header username="testUser" onLogout={() => handleLogout()}></Header>
+      {/* <HeaderPlaceholder></HeaderPlaceholder> */}
       {error && <Error>{`error message: ${error} `}</Error>}
-      <Card>
-        <h4>Escriu el que penses</h4>
-        <Form style={{ height: "300px", justifyContent: "space-around" }}>
+      <Card style={{ margin: "90px auto" }}>
+        <div style={{ display: "flex" }}>
+          <h4>Escriu el que penses i ➡️➡️➡️ </h4>{" "}
+          <Button
+            style={{
+              padding: "5px 12px",
+              marginRight: "6px"
+            }}
+            onClick={handleSubmit}
+            disabled={isButtonDisabled}
+          >
+            {butttonText()}
+          </Button>
+        </div>
+        {/* <Form style={{ height: "300px", justifyContent: "space-around" }}> */}
+        <Form>
           <GradientBox>
             <TextArea
               placeholder="your text"
@@ -93,10 +121,6 @@ function CreateComments({ history }) {
               }}
             ></TextArea>
           </GradientBox>
-
-          <Button onClick={handleSubmit} disabled={isButtonDisabled}>
-            {isFetching ? "loading" : "submit"}
-          </Button>
         </Form>
       </Card>
       {/* <div>{JSON.stringify(confessions)}</div> */}

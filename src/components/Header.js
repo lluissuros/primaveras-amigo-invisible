@@ -7,7 +7,8 @@ const HeaderToTop = styled.header`
   top: 0;
   left: 0;
   width: 100%;
-  margin: 12px 0px;
+  padding: 12px 0px;
+  z-index: 1;
   background: ${props => props.theme.black};
 `;
 

@@ -4,10 +4,11 @@ const Card = styled.div`
   box-sizing: border-box;
   //   min-width: 410px;
   margin: 24px auto;
-  padding: 0 2rem;
+  //   padding: 0 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const Form = styled.div`

@@ -29,7 +29,7 @@ const theme = {
 
 const GlobalStyle = createGlobalStyle`
     html {
-        height: 100%;
+        // height: 100%;
         background: ${props => props.theme.black};
         display: flex;
     }
