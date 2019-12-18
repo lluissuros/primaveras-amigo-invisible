@@ -47,7 +47,7 @@ IMPORTANT: Tots els missatges son anonims, SEMPRE.
 Le caos ha arribat.
 
  *** FASE1: ESCRIURE CONFESSIONS (fins al 21 desembre)
- Totes i tots han d'escriure un o més comentaris sobre el que pensen i senten. Es recomana sinceritat i elegància i ortografía. 
+ Totes i tots han d'escriure un o més comentaris sobre el que pensen i senten. Es recomana sinceritat i elegància i urtugrafìa. 
  Si hi ha alguna cosa que vols dir, ara es un bon moment per posar-se emocional, crítica, reflexiva, per insultar, declarar-se... Treu-t'ho de sobre abans d'acabar l'any!
  Si vols escriure algo lleuger i graciosete, tb està bé. 
  Fins i tot, pots tornar a donar la teva opinió sobre la vaga de taxis o la crema de containers, pero no siguis pallissotes i tira més cap a sanar traumes
@@ -73,7 +73,9 @@ Le caos ha arribat.
 
 function InfoPage({ history }) {
   return (
-    <div style={{ textAlign: "left", padding: "12px" }}>
+    <div
+      style={{ margin: "none", textAlign: "left", touchAction: "manipulation" }}
+    >
       <h1
         style={{}}
         onClick={() => {
@@ -83,7 +85,7 @@ function InfoPage({ history }) {
         🏠 tornar
       </h1>
 
-      <div style={{ whiteSpace: "pre-wrap", width: "90%" }}>{info}</div>
+      <div style={{ whiteSpace: "pre-wrap", margin: "24px" }}>{info}</div>
     </div>
   );
 }
