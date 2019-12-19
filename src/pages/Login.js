@@ -26,14 +26,18 @@ function Login({ history }) {
 
   return (
     <Card>
-      <GradientBox>
-        <div
-          onClick={() => history.push("/info")}
-          style={{ fontSize: "48px", height: "55px", width: "54px" }}
-        >
-          ℹ️
-        </div>
-      </GradientBox>
+      <div
+        onClick={() => history.push("/info")}
+        style={{
+          fontSize: "48px",
+          height: "55px",
+          width: "54px",
+          border: "5px solid #FFC107",
+          borderRadius: "20px"
+        }}
+      >
+        ℹ️
+      </div>
       <AuthForm error={error} onConfirm={handleLogin} btnMessage="Log in" />
     </Card>
   );

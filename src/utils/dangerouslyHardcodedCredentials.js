@@ -63,12 +63,12 @@ const credentials = [
   },
   {
     username: "i.riera.camps@gmail.com",
-    password: "el desarrollo  gradual"
+    password: "contrasenyamonguer"
   },
-  {
-    username: "maryabaz@gmail.com",
-    password: "lo placentero"
-  },
+  //   {
+  //     username: "maryabaz@gmail.com",
+  //     password: "lo placentero"
+  //   },
   {
     username: "lluisky@gmail.com",
     password: "a solidaridad"
@@ -79,7 +79,7 @@ const credentials = [
   },
   {
     username: "acatalapascual@gmail.com",
-    password: "la revolucion"
+    password: "contrasenyamonguer"
   },
   {
     username: "pascuv@gmail.com",
