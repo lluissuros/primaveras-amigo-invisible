@@ -51,6 +51,28 @@ const AlternativeButton = styled(Button)`
   color: ${props => props.theme.black};
 `;
 
+const ActionButton = styled.button`
+  color: ${props => props.theme.darkFontColor};
+  background: ${props => props.theme.colorfulDarkerColor};
+  border: 4px solid ${props => props.theme.borderColor};
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+
+  :hover {
+    color: ${props => props.theme.darkFontColor};
+    background: ${props => props.theme.actionColor};
+    border-color: ${props => props.theme.borderColor};
+    box-shadow: 3px 1px 2px 1px rgba(133, 20, 75, 0.15);
+    transition: all 0.4s ease 0s;
+  }
+  :focus {
+    outline: 0;
+  }
+`;
+
 const SmallButton = styled.button`
   background: linear-gradient(to bottom, #ff9800, #ffc1074a);
   border-color: none;
@@ -117,6 +139,7 @@ export {
   Input,
   Button,
   AlternativeButton,
+  ActionButton,
   SmallButton,
   Logo,
   Card,

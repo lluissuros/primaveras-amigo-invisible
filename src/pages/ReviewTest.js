@@ -12,6 +12,7 @@ import {
   Form,
   Input,
   Button,
+  ActionButton,
   Error,
   GradientBox
 } from "../components/StyledComponents";
@@ -113,13 +114,13 @@ function ReviewTest({ history }) {
       ) : (
         <PostByUserList />
       )}
-      <div
+      <ActionButton
         onClick={() => {
           sendTestEmail();
         }}
       >
         HERE TEST EMAIL CLICK
-      </div>
+      </ActionButton>
     </div>
   );
 }

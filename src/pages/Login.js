@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import AuthForm from "../components/AuthForm";
-import { Card } from "../components/StyledComponents";
+import { Card, GradientBox } from "../components/StyledComponents";
 import { isLoggedIn, storeCredentials } from "../utils/AuthHelperMethods";
 
 function Login({ history }) {
@@ -26,9 +26,14 @@ function Login({ history }) {
 
   return (
     <Card>
-      <div onClick={() => history.push("/info")} style={{ fontSize: "48px" }}>
-        ℹ️
-      </div>
+      <GradientBox>
+        <div
+          onClick={() => history.push("/info")}
+          style={{ fontSize: "48px", height: "55px", width: "54px" }}
+        >
+          ℹ️
+        </div>
+      </GradientBox>
       <AuthForm error={error} onConfirm={handleLogin} btnMessage="Log in" />
     </Card>
   );

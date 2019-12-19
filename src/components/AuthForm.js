@@ -65,7 +65,7 @@ function AuthForm({ error, onConfirm, btnMessage }) {
             checked={rememberMe}
             onChange={e => setRememberMe(e.target.checked)}
           />
-          <span>{"Remember me"}</span>
+          <span style={{ marginBottom: "12px" }}>{"Remember me"}</span>
         </RowContainer>
 
         <Button onClick={handleConfirm}>{btnMessage}</Button>
