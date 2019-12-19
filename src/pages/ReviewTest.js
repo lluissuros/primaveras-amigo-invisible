@@ -17,7 +17,12 @@ import {
   GradientBox
 } from "../components/StyledComponents";
 import Header from "../components/Header";
-import { logout, getDecryptedUser, getUsers } from "../utils/AuthHelperMethods";
+import {
+  logout,
+  getDecryptedUser,
+  getUsers,
+  getPassword
+} from "../utils/AuthHelperMethods";
 import { getConfessions, createConfession } from "../utils/api";
 
 const overrideSpinner = css`
@@ -41,6 +46,7 @@ const HeaderPlaceholder = styled.div`
 
 function ReviewTest({ history }) {
   const [error, setError] = useState(null);
+  const [counter, setCounter] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
   const [confessions, setConfessions] = useState([]);
 
@@ -62,21 +68,29 @@ function ReviewTest({ history }) {
   const notifyError = (message = "no message") =>
     toast(message, { type: toast.TYPE.ERROR });
 
-  const sendTestEmail = () => {
+  const sendWelcomeEmailToAll = () => {
+    const users = getUsers().filter(el => el.includes("@"));
+    // console.log(users);
+
+    const currentUser = users[counter];
+    sendWelcomeEmail(currentUser, getPassword(currentUser));
+
+    setCounter(counter + 1);
+  };
+
+  const sendWelcomeEmail = (username, password) => {
     const template_params = {
-      to_email: "lluissuros@gmail.com",
+      to_email: username,
       reply_to: "lluissuros@gmail.com",
       from_name: "Comisión de eventus Primaveras",
-      link_to_app: "link_to_app_value",
-      username: "username_value",
-      password: "password_value",
-      message_html: "message_html_value"
+      link_to_app: "https://primappveras.lluissuros.now.sh/",
+      username: username,
+      password: password
     };
-
     const service_id = "default_service";
     const template_id = "template_tC1XVGKb";
     window.emailjs.send(service_id, template_id, template_params);
-    console.log("email sent?");
+    console.log(`email sent to ${username}`);
   };
 
   const PostByUserList = () => {
@@ -116,7 +130,7 @@ function ReviewTest({ history }) {
       )}
       <ActionButton
         onClick={() => {
-          sendTestEmail();
+          sendWelcomeEmailToAll();
         }}
       >
         HERE TEST EMAIL CLICK

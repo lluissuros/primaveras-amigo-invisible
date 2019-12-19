@@ -15,6 +15,14 @@ export function getUsers() {
   return credentials.map(e => e.username);
 }
 
+export function getPassword(username) {
+  //TODO not secure at all
+  const user = credentials.filter(e => {
+    return e.username === username;
+  });
+  return user[0].password;
+}
+
 export function getEncryptedUser() {
   const username =
     localStorage.getItem("primaveras_username") ||

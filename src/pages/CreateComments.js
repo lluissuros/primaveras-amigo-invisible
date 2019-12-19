@@ -136,7 +136,7 @@ function CreateComments({ history }) {
           <Form>
             <GradientBox>
               <TextArea
-                placeholder="your text"
+                placeholder="🤬🗯️💭💬💣💌🔥❤️🥰 escriu aquí"
                 value={confession}
                 onChange={e => {
                   setConfession(e.target.value);

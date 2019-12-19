@@ -26,10 +26,6 @@ const credentials = [
     password: "la irrupcion"
   },
   {
-    username: "lluissuros@gmail.com",
-    password: "la mengua"
-  },
-  {
     username: "noelia.herrerag@gmail.com",
     password: "lo insondable"
   },
