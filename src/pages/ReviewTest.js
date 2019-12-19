@@ -61,6 +61,23 @@ function ReviewTest({ history }) {
   const notifyError = (message = "no message") =>
     toast(message, { type: toast.TYPE.ERROR });
 
+  const sendTestEmail = () => {
+    const template_params = {
+      to_email: "lluissuros@gmail.com",
+      reply_to: "lluissuros@gmail.com",
+      from_name: "Comisión de eventus Primaveras",
+      link_to_app: "link_to_app_value",
+      username: "username_value",
+      password: "password_value",
+      message_html: "message_html_value"
+    };
+
+    const service_id = "default_service";
+    const template_id = "template_tC1XVGKb";
+    window.emailjs.send(service_id, template_id, template_params);
+    console.log("email sent?");
+  };
+
   const PostByUserList = () => {
     const usersObject = getUsers().reduce((acc, user) => {
       acc[user] = 0;
@@ -96,6 +113,13 @@ function ReviewTest({ history }) {
       ) : (
         <PostByUserList />
       )}
+      <div
+        onClick={() => {
+          sendTestEmail();
+        }}
+      >
+        HERE TEST EMAIL CLICK
+      </div>
     </div>
   );
 }
