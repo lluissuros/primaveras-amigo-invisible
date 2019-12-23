@@ -20,7 +20,8 @@ function Login({ history }) {
 
   try {
     if (loggedIn || isLoggedIn()) {
-      return <Redirect to="/createcommments" />;
+      //   return <Redirect to="/createcommments" />;
+      return <Redirect to="/review" />;
     }
   } catch (e) {}
 

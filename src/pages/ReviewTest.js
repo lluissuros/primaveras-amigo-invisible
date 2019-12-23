@@ -78,6 +78,50 @@ function ReviewTest({ history }) {
     setCounter(counter + 1);
   };
 
+  const sendUpdateEmailToUsers = () => {
+    // only for people que no ha postejat
+    const validUsers = getUsers().filter(el => el.includes("@"));
+    const usersObject = validUsers.reduce((acc, user) => {
+      acc[user] = 0;
+      return acc;
+    }, {});
+    const postsByUser = confessions.reduce((acc, confession) => {
+      const userReal = getDecryptedUser(confession.userId);
+      acc[userReal] = acc[userReal] + 1;
+      return acc;
+    }, usersObject);
+
+    {
+      Object.entries(postsByUser).map(pair => (
+        <div key={pair[0]}>{`${pair[1]} comments by user ${pair[0]}`}</div>
+      ));
+    }
+    const usersWithNoPosts = Object.entries(postsByUser)
+      .filter(pair => pair[1] === 0)
+      .map(user => user[0]);
+
+    const currentUser = usersWithNoPosts[counter];
+    sendUpdateEmail(currentUser, getPassword(currentUser));
+    console.log(currentUser);
+    setCounter(counter + 1);
+  };
+
+  const sendUpdateEmail = (username, password) => {
+    const template_params = {
+      to_email: username,
+      reply_to: "lluissuros@gmail.com",
+      from_name: "Comisión de eventus Primaveras",
+      link_to_app: "https://primappveras.lluissuros.now.sh/",
+      username: username,
+      password: password
+    };
+
+    const service_id = "default_service";
+    var template_id = "template_tC1XVGKb_clone";
+    window.emailjs.send(service_id, template_id, template_params);
+    console.log(`email sent to ${username}`);
+  };
+
   const sendWelcomeEmail = (username, password) => {
     const template_params = {
       to_email: username,
@@ -130,7 +174,7 @@ function ReviewTest({ history }) {
       )}
       <ActionButton
         onClick={() => {
-          sendWelcomeEmailToAll();
+          sendUpdateEmailToUsers();
         }}
       >
         HERE TEST EMAIL CLICK

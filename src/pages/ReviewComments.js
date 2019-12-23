@@ -77,8 +77,6 @@ function ReviewComments({ history }) {
     }
     const validConfessions = getValidConfessions(confessions, reviews);
     setCurrentConfReview(validConfessions[0]);
-
-    console.log(validConfessions);
   };
 
   const fetchData = () => {
@@ -120,7 +118,6 @@ function ReviewComments({ history }) {
   };
 
   const handleSlider = val => {
-    console.log(val);
     setScore(val);
   };
 
@@ -131,7 +128,6 @@ function ReviewComments({ history }) {
         notifySucces(
           `review guardat, merci! score: ${JSON.stringify(createdReview.score)}`
         );
-        console.log(createdReview);
         fetchData();
       })
       .catch(e => notifyError(e.message));
@@ -144,31 +140,24 @@ function ReviewComments({ history }) {
     toast(message, { type: toast.TYPE.ERROR });
 
   const getValidConfessions = (confessions, reviews) => {
-    console.log(reviews);
-    console.log(confessions);
-
     // 1- filter not mine confessions
     const encryptedUserId = getEncryptedUser();
     const decryptedUserId = getDecryptedUser(encryptedUserId);
-    console.log(encryptedUserId);
-    console.log(decryptedUserId);
+
     const notMineConfessions = confessions.filter(conf => {
       return getDecryptedUser(conf.userId) !== decryptedUserId;
     });
 
-    console.log(notMineConfessions);
     // 2- filter not reviewed by me confessions
     const reviewedByMe = reviews
       .filter(review => {
         return getDecryptedUser(review.userId) === decryptedUserId;
       })
       .map(review => review.confessionId);
-    console.log(reviewedByMe);
 
     const notMineAndNotReviewedYet = notMineConfessions.filter(conf => {
       return !reviewedByMe.includes(conf._id);
     });
-    console.log(notMineAndNotReviewedYet);
     // 3- shuffle
     const shuffle = arr =>
       arr.reduceRight(
