@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 import Login from "./pages/Login";
 import CreateComments from "./pages/CreateComments";
 import ReviewTest from "./pages/ReviewTest";
+import ReviewComments from "./pages/ReviewComments";
 import InfoPage from "./pages/InfoPage";
 
 toast.configure();
@@ -85,7 +86,8 @@ function App() {
                 path="/createcommments"
                 component={CreateComments}
               />
-              <Route path="/reviewtest" component={ReviewTest}></Route>
+              <PrivateRoute path="/review" component={ReviewComments} />
+              <Route path="/test" component={ReviewTest}></Route>
               <Route component={Login} />
             </Switch>
           </div>

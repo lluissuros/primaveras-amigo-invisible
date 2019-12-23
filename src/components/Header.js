@@ -30,12 +30,12 @@ const Header = ({ username, onLogout, onClickInfo }) => {
             ℹ️
           </div>
           <div style={{ display: "flex" }}>
-            <span>🔥💙❤️🧡</span>
+            <span style={{ fontSize: "10px" }}>🔥💙❤️🧡</span>
             <h1 style={{ margin: "0px 12px" }}>{` Holi `}</h1>
-            <span>💛💚💜🌶️</span>
+            <span style={{ fontSize: "10px" }}>💛💚💜🌶️</span>
           </div>
 
-          <div>
+          <div style={{ minWidth: "76px" }}>
             <AlternativeButton
               style={{ marginRight: "1rem" }}
               onClick={() => onLogout()}

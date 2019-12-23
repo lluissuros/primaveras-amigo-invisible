@@ -1,11 +1,20 @@
 import { getEncryptedUser, getDecryptedUser } from "./AuthHelperMethods";
 
-const BASE_URL = "https://primaveras-server.herokuapp.com/";
-// const BASE_URL = "http://localhost:5000";
+//const BASE_URL = "https://primaveras-server.herokuapp.com/";
+const BASE_URL = "http://localhost:5000";
+
+console.error("USING LOCALHOST CHANGE IT");
 
 export function getConfessions() {
   // Get a token from api server using the fetch api
   return makeAuthenticatedRequest(BASE_URL, null, {
+    method: "GET"
+  });
+}
+
+export function getReviews() {
+  // Get a token from api server using the fetch api
+  return makeAuthenticatedRequest(`${BASE_URL}/reviews/`, null, {
     method: "GET"
   });
 }
@@ -20,6 +29,24 @@ export function createConfession(text, userId = "userID MISSING") {
       text,
       userId: encryptedUserId
     })
+  });
+}
+
+export function createReview(userId, confessionId, score, isSpam = false) {
+  const encryptedUserId = getEncryptedUser();
+  console.log("test encrypted userId", encryptedUserId);
+  console.log("test Dencrypted userId", getDecryptedUser(encryptedUserId));
+
+  const newReview = {
+    userId: getEncryptedUser(),
+    isSpam,
+    confessionId,
+    score
+  };
+
+  return makeAuthenticatedRequest(`${BASE_URL}/review/`, null, {
+    method: "POST",
+    body: JSON.stringify(newReview)
   });
 }
 
