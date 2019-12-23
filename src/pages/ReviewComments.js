@@ -62,42 +62,51 @@ const HeaderPlaceholder = styled.div`
 
 function ReviewComments({ history }) {
   const [error, setError] = useState(null);
-  const [confessions, setConfessions] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const [isFetching, setIsFetching] = useState(true);
+  const [currentPercent, setCurrentPercent] = useState(null);
+  const [currentRanking, setCurrentRanking] = useState(null);
+  const [currentConfReview, setCurrentConfReview] = useState(null);
   const [isSpam, setIsSpam] = useState(false);
   const [score, setScore] = useState(null);
 
   const SliderWithTooltip = Slider.createSliderWithTooltip(Slider);
 
+  const chooseCurrentReviewIfReady = (confessions, reviews) => {
+    if (confessions.length === 0 || reviews.length === 0) {
+      console.log("need more info");
+      return;
+    }
+    const validConfessions = getValidConfessions(confessions, reviews);
+    setCurrentConfReview(validConfessions[0]);
+
+    console.log(validConfessions);
+  };
+
   const fetchData = () => {
     console.log("fetching data...");
-    setConfessions([]);
-    setReviews([]);
-    setIsFetching(true);
-    let fetchedConfessions = false;
-    let fetchedReviews = false;
+    let fetchedConfessions = [];
+    let fetchedReviews = [];
+    //reset
+    setCurrentConfReview(null);
+    setIsSpam(false);
+    setScore(null);
 
     getConfessions()
       .then(responseData => {
-        setConfessions(responseData);
-        fetchedConfessions = true;
+        fetchedConfessions = responseData;
       })
       .catch(e => setError(e.message))
       .then(() => {
-        setIsFetching(!fetchedConfessions || !fetchedReviews);
+        chooseCurrentReviewIfReady(fetchedConfessions, fetchedReviews);
       });
 
     // get reviews
-
     getReviews()
       .then(responseData => {
-        setReviews(responseData);
-        fetchedReviews = true;
+        fetchedReviews = responseData;
       })
       .catch(e => setError(e.message))
       .then(() => {
-        setIsFetching(!fetchedConfessions || !fetchedReviews);
+        chooseCurrentReviewIfReady(fetchedConfessions, fetchedReviews);
       });
   };
 
@@ -116,12 +125,16 @@ function ReviewComments({ history }) {
   };
 
   const handleSubmitReview = () => {
-    console.log("handleSubmitReview");
-    // 1- create review object (encode username)
-    // 2- post review
-    // 3- notify toast, and load again confessions
-    // isFecthing true, confessions and reviews = []
-    // 4 - fetch Data
+    console.log("posting Review...");
+    createReview(currentConfReview._id, score, isSpam)
+      .then(createdReview => {
+        notifySucces(
+          `review guardat, merci! score: ${JSON.stringify(createdReview.score)}`
+        );
+        console.log(createdReview);
+        fetchData();
+      })
+      .catch(e => notifyError(e.message));
   };
 
   const notifySucces = (message = "no message") =>
@@ -130,7 +143,7 @@ function ReviewComments({ history }) {
   const notifyError = (message = "no message") =>
     toast(message, { type: toast.TYPE.ERROR });
 
-  const getValidConfessions = () => {
+  const getValidConfessions = (confessions, reviews) => {
     console.log(reviews);
     console.log(confessions);
 
@@ -165,41 +178,19 @@ function ReviewComments({ history }) {
         []
       );
 
+    setCurrentPercent(
+      Math.floor(
+        (1 - notMineAndNotReviewedYet.length / notMineConfessions.length) * 100
+      )
+    );
+    setCurrentRanking();
     return shuffle(notMineAndNotReviewedYet);
   };
 
-  const PostByUserList = () => {
-    //TODO DELETE
-    const usersObject = getUsers().reduce((acc, user) => {
-      acc[user] = 0;
-      return acc;
-    }, {});
-    const postsByUser = confessions.reduce((acc, confession) => {
-      const userReal = getDecryptedUser(confession.userId);
-      acc[userReal] = acc[userReal] + 1;
-      return acc;
-    }, usersObject);
-
-    return (
-      <div style={{ margin: "100px 0px", textAlign: "left" }}>
-        {Object.entries(postsByUser).map(pair => (
-          <div key={pair[0]}>{`${pair[1]} comments by user ${pair[0]}`}</div>
-        ))}
-      </div>
-    );
-  };
-
   const ReviewComponent = () => {
-    console.log(getValidConfessions());
-
-    const mockConfession = confessions[0];
-
-    //1 - get valid confessions for the current user
-    //2 - render confession (confession, checbox, slider)
-
     return (
       <div>
-        <Card style={{ marginTop: "90px " }}>
+        <Card style={{ marginTop: "90px", padding: "10px" }}>
           <div style={{ display: "flex" }}>
             <h4>Et representa el que llegeixes? ➡️ </h4>{" "}
             <Button
@@ -241,7 +232,8 @@ function ReviewComments({ history }) {
                 "-100": {
                   style: {
                     fontSize: "16px",
-                    width: "45px"
+                    width: "45px",
+                    left: "6%"
                   },
                   label: "🙅🤯❌👎"
                 },
@@ -259,7 +251,8 @@ function ReviewComments({ history }) {
                 100: {
                   style: {
                     fontSize: "16px",
-                    width: "45px"
+                    width: "45px",
+                    left: "96%"
                   },
                   label: "👍🍺✅💯"
                 }
@@ -269,10 +262,12 @@ function ReviewComments({ history }) {
 
           <Form>
             <GradientBox>
-              <TextArea readOnly value={mockConfession}></TextArea>
+              <TextArea readOnly value={"TODO TEXT HERE"}></TextArea>
             </GradientBox>
           </Form>
         </Card>
+        {`Has revisat el ${currentPercent} % 🤖`}
+        {`Ranking: TODO 👾`}
       </div>
     );
   };
@@ -282,13 +277,12 @@ function ReviewComments({ history }) {
       <Header username="testUser" onLogout={() => handleLogout()}></Header>
       {error && <Error>{`error message: ${error} `}</Error>}
 
-      {isFetching ? (
+      {!currentConfReview ? (
         <MoonLoader
           css={overrideSpinner}
           sizeUnit={"px"}
           size={200}
           color={"#ffc107"}
-          loading={isFetching}
         />
       ) : (
         <ReviewComponent />
