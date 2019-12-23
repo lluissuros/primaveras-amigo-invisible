@@ -109,6 +109,11 @@ function ReviewComments({ history }) {
     history.push(`/`);
   };
 
+  const handleSlider = val => {
+    console.log(val);
+    setScore(val);
+  };
+
   const handleSubmitReview = () => {
     console.log("handleSubmitReview");
     // 1- create review object (encode username)
@@ -188,41 +193,48 @@ function ReviewComments({ history }) {
             <span style={{ marginBottom: "12px" }}>{"es Spam/Error??"}</span>
           </RowContainer>
 
-          <SliderWithTooltip
-            style={{ margin: "10px 0px 63px 0px" }}
-            railStyle={{
-              background:
-                "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(100,100,100,1) 50%, rgba(86,255,0,1) 100%)"
-            }}
-            trackStyle={{ background: "none" }}
-            min={-100}
-            max={100}
-            marks={{
-              "-100": {
-                style: {
-                  fontSize: "16px"
+          {!isSpam && (
+            <SliderWithTooltip
+              onAfterChange={handleSlider}
+              defaultValue={score || 0}
+              style={{ margin: "10px 0px 63px 0px" }}
+              railStyle={{
+                background:
+                  "linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(100,100,100,1) 50%, rgba(86,255,0,1) 100%)"
+              }}
+              trackStyle={{ background: "none" }}
+              handleStyle={{ background: "yellow" }}
+              min={-100}
+              max={100}
+              marks={{
+                "-100": {
+                  style: {
+                    fontSize: "16px",
+                    width: "45px"
+                  },
+                  label: "🙅🤯❌👎"
                 },
-                label: "🙅🤯❌👎"
-              },
-              "0": {
-                style: {
-                  fontSize: "16px"
+                "0": {
+                  style: {
+                    fontSize: "16px"
+                  },
+                  label: (
+                    <div>
+                      <div>😐</div>
+                      <div>NO M'AFECTA</div>
+                    </div>
+                  )
                 },
-                label: (
-                  <div>
-                    <div>😐</div>
-                    <div>NO M'AFECTA</div>
-                  </div>
-                )
-              },
-              100: {
-                style: {
-                  fontSize: "16px"
-                },
-                label: "👍🍺✅💯"
-              }
-            }}
-          />
+                100: {
+                  style: {
+                    fontSize: "16px",
+                    width: "45px"
+                  },
+                  label: "👍🍺✅💯"
+                }
+              }}
+            />
+          )}
 
           <Form>
             <GradientBox>
