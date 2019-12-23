@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
@@ -89,6 +94,7 @@ function App() {
               <PrivateRoute path="/review" component={ReviewComments} />
               <Route path="/test" component={ReviewTest}></Route>
               <Route component={Login} />
+              <Redirect exact from="/" to="login" />
             </Switch>
           </div>
         </Router>

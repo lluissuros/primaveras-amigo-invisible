@@ -1,4 +1,8 @@
-import { getEncryptedUser, getDecryptedUser } from "./AuthHelperMethods";
+import {
+  getEncryptedUser,
+  getDecryptedUser,
+  getUsers
+} from "./AuthHelperMethods";
 
 const BASE_URL = "https://primaveras-server.herokuapp.com/";
 // const BASE_URL = "http://localhost:5000/";
@@ -50,16 +54,44 @@ export function createReview(confessionId, score, isSpam = false) {
   });
 }
 
-export function __createConfession(text, userId = "userID MISSING") {
-  console.log("Posting request...");
-  fetch(BASE_URL, {
-    method: "post",
-    body: { text, userId }
-  })
-    .then(response => response.json())
-    .catch(e => {
-      throw new Error(e.message);
-    });
+export function getSortedRanking(confessions, reviews) {
+  //we calculate it in the front end, if it takes very long we could warp it in a Promise
+
+  //pendingReviewsByUser = confessions.length - confessionsByUser - reviewsByUser
+  const usersObject = getUsers().reduce((acc, user) => {
+    acc[user] = 0;
+    return acc;
+  }, {});
+  const postsByUser = confessions.reduce((acc, confession) => {
+    const userReal = getDecryptedUser(confession.userId);
+    acc[userReal] = acc[userReal] + 1;
+    return acc;
+  }, Object.assign({}, usersObject));
+
+  const reviewsByUser = reviews.reduce((acc, review) => {
+    const userReal = getDecryptedUser(review.userId);
+    acc[userReal] = acc[userReal] + 1;
+    return acc;
+  }, Object.assign({}, usersObject));
+
+  const percentages = getUsers().map(user => {
+    const pendingReviews =
+      confessions.length - postsByUser[user] - reviewsByUser[user];
+    const percentage =
+      (100 * (confessions.length - pendingReviews)) / confessions.length;
+    return { user, percentage };
+  });
+
+  const sortedPercentages = percentages.sort((a, b) => {
+    return b.percentage - a.percentage;
+  });
+
+  console.log(usersObject);
+  console.log(postsByUser);
+  console.log(reviewsByUser);
+  console.log(percentages);
+
+  return sortedPercentages;
 }
 
 function makeAuthenticatedRequest(url, token, options) {

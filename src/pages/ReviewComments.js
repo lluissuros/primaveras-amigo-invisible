@@ -30,7 +30,8 @@ import {
   getConfessions,
   getReviews,
   createConfession,
-  createReview
+  createReview,
+  getSortedRanking
 } from "../utils/api";
 
 const overrideSpinner = css`
@@ -140,6 +141,8 @@ function ReviewComments({ history }) {
     toast(message, { type: toast.TYPE.ERROR });
 
   const getValidConfessions = (confessions, reviews) => {
+    console.log(confessions);
+    console.log(reviews);
     // 1- filter not mine confessions
     const encryptedUserId = getEncryptedUser();
     const decryptedUserId = getDecryptedUser(encryptedUserId);
@@ -172,7 +175,13 @@ function ReviewComments({ history }) {
         (1 - notMineAndNotReviewedYet.length / notMineConfessions.length) * 100
       )
     );
-    setCurrentRanking();
+
+    const currentRanking = getSortedRanking(confessions, reviews);
+    const userRankingIndex = currentRanking.findIndex(
+      el => el.user === decryptedUserId
+    );
+
+    setCurrentRanking(userRankingIndex + 1);
     return shuffle(notMineAndNotReviewedYet);
   };
 
@@ -251,12 +260,12 @@ function ReviewComments({ history }) {
 
           <Form>
             <GradientBox>
-              <TextArea readOnly value={"TODO TEXT HERE"}></TextArea>
+              <TextArea readOnly value={currentConfReview.text}></TextArea>
             </GradientBox>
           </Form>
         </Card>
-        {`Has revisat el ${currentPercent} % 🤖`}
-        {`Ranking: TODO 👾`}
+        <div>{`Has revisat el ${currentPercent} % 🤖`}</div>
+        <div>{`Ranking: Vas en la posició numero ${currentRanking} 🏅`}</div>
       </div>
     );
   };
