@@ -22,6 +22,7 @@ import Header from "../components/Header";
 import {
   logout,
   getDecryptedUser,
+  getEncryptedUser,
   getUsers,
   getPassword
 } from "../utils/AuthHelperMethods";
@@ -130,11 +131,41 @@ function ReviewComments({ history }) {
     toast(message, { type: toast.TYPE.ERROR });
 
   const getValidConfessions = () => {
-    // 1- filter not mine confessions
-    // 2- filter not reviewed by me confessions
-    // 3- scramble
     console.log(reviews);
     console.log(confessions);
+
+    // 1- filter not mine confessions
+    const encryptedUserId = getEncryptedUser();
+    const decryptedUserId = getDecryptedUser(encryptedUserId);
+    console.log(encryptedUserId);
+    console.log(decryptedUserId);
+    const notMineConfessions = confessions.filter(conf => {
+      return getDecryptedUser(conf.userId) !== decryptedUserId;
+    });
+
+    console.log(notMineConfessions);
+    // 2- filter not reviewed by me confessions
+    const reviewedByMe = reviews
+      .filter(review => {
+        return getDecryptedUser(review.userId) === decryptedUserId;
+      })
+      .map(review => review.confessionId);
+    console.log(reviewedByMe);
+
+    const notMineAndNotReviewedYet = notMineConfessions.filter(conf => {
+      return !reviewedByMe.includes(conf._id);
+    });
+    console.log(notMineAndNotReviewedYet);
+    // 3- shuffle
+    const shuffle = arr =>
+      arr.reduceRight(
+        (res, _, __, arr) => (
+          res.push(arr.splice(0 | (Math.random() * arr.length), 1)[0]), res
+        ),
+        []
+      );
+
+    return shuffle(notMineAndNotReviewedYet);
   };
 
   const PostByUserList = () => {
