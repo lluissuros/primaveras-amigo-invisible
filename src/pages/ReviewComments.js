@@ -6,6 +6,7 @@ import MoonLoader from "react-spinners/MoonLoader";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import finishImg from "../img/finish.jpeg";
+import errorImg from "../img/error.jpeg";
 
 import { css } from "@emotion/core";
 import styled from "styled-components";
@@ -70,7 +71,7 @@ const LogoContainer = styled.div`
 `;
 
 function ReviewComments({ history }) {
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("hello");
   const [currentPercent, setCurrentPercent] = useState(null);
   const [currentRanking, setCurrentRanking] = useState(null);
   const [currentConfReview, setCurrentConfReview] = useState(null);
@@ -89,32 +90,37 @@ function ReviewComments({ history }) {
   };
 
   const fetchData = () => {
-    console.log("fetching data...");
-    let fetchedConfessions = [];
-    let fetchedReviews = [];
-    //reset
-    setCurrentConfReview(null);
-    setIsSpam(false);
-    setScore(null);
+    try {
+      console.log("fetching data...");
+      let fetchedConfessions = [];
+      let fetchedReviews = [];
+      //reset
+      setError(null);
+      setCurrentConfReview(null);
+      setIsSpam(false);
+      setScore(null);
 
-    getConfessions()
-      .then(responseData => {
-        fetchedConfessions = responseData;
-      })
-      .catch(e => setError(e.message))
-      .then(() => {
-        chooseCurrentReviewIfReady(fetchedConfessions, fetchedReviews);
-      });
+      getConfessions()
+        .then(responseData => {
+          fetchedConfessions = responseData;
+        })
+        .then(() => {
+          chooseCurrentReviewIfReady(fetchedConfessions, fetchedReviews);
+        })
+        .catch(e => setError("💩❓💩DA FUCK un error 💩❓💩"));
 
-    // get reviews
-    getReviews()
-      .then(responseData => {
-        fetchedReviews = responseData;
-      })
-      .catch(e => setError(e.message))
-      .then(() => {
-        chooseCurrentReviewIfReady(fetchedConfessions, fetchedReviews);
-      });
+      // get reviews
+      getReviews()
+        .then(responseData => {
+          fetchedReviews = responseData;
+        })
+        .then(() => {
+          chooseCurrentReviewIfReady(fetchedConfessions, fetchedReviews);
+        })
+        .catch(e => setError("💩❓💩DA FUCK un error 💩❓💩"));
+    } catch {
+      setError("💩❓💩DA FUCK un error 💩❓💩");
+    }
   };
 
   useEffect(() => {
@@ -151,6 +157,7 @@ function ReviewComments({ history }) {
   const getValidConfessions = (confessions, reviews) => {
     console.log(confessions);
     console.log(reviews);
+
     // 1- filter not mine confessions
     const encryptedUserId = getEncryptedUser();
     const decryptedUserId = getDecryptedUser(encryptedUserId);
@@ -318,6 +325,16 @@ function ReviewComments({ history }) {
 
   if (currentPercent >= 100) {
     return <FinishComponent />;
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <Error>{error}</Error>
+        <img style={{ width: "300px", margin: "20px 0px" }} src={errorImg} />
+        <Button onClick={fetchData}>TORNA A PROVAR</Button>
+      </Card>
+    );
   }
 
   return (
