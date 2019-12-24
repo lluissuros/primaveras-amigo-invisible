@@ -68,17 +68,16 @@ function ReviewTest({ history }) {
   const notifyError = (message = "no message") =>
     toast(message, { type: toast.TYPE.ERROR });
 
-  const sendWelcomeEmailToAll = () => {
+  const sendEmailToAll = () => {
     const users = getUsers().filter(el => el.includes("@"));
-    // console.log(users);
 
     const currentUser = users[counter];
-    sendWelcomeEmail(currentUser, getPassword(currentUser));
+    sendFase2Email(currentUser, getPassword(currentUser));
 
     setCounter(counter + 1);
   };
 
-  const sendUpdateEmailToUsers = () => {
+  const ____sendUpdateEmailToUsers = () => {
     // only for people que no ha postejat
     const validUsers = getUsers().filter(el => el.includes("@"));
     const usersObject = validUsers.reduce((acc, user) => {
@@ -101,12 +100,12 @@ function ReviewTest({ history }) {
       .map(user => user[0]);
 
     const currentUser = usersWithNoPosts[counter];
-    sendUpdateEmail(currentUser, getPassword(currentUser));
+    // sendUpdateEmail(currentUser, getPassword(currentUser));
     console.log(currentUser);
     setCounter(counter + 1);
   };
 
-  const sendUpdateEmail = (username, password) => {
+  const sendFase2Email = (username, password) => {
     const template_params = {
       to_email: username,
       reply_to: "lluissuros@gmail.com",
@@ -118,6 +117,7 @@ function ReviewTest({ history }) {
 
     const service_id = "default_service";
     var template_id = "template_tC1XVGKb_clone";
+
     window.emailjs.send(service_id, template_id, template_params);
     console.log(`email sent to ${username}`);
   };
@@ -174,7 +174,7 @@ function ReviewTest({ history }) {
       )}
       <ActionButton
         onClick={() => {
-          sendUpdateEmailToUsers();
+          sendEmailToAll();
         }}
       >
         HERE TEST EMAIL CLICK

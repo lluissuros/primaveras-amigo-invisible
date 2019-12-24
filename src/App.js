@@ -88,13 +88,12 @@ function App() {
               <Route path="/login" component={Login} />
               <Route path="/info" component={InfoPage} />
               <PrivateRoute
-                path="/createcommments"
+                path="/createcommments_venga_va"
                 component={CreateComments}
               />
               <PrivateRoute path="/review" component={ReviewComments} />
               <Route path="/test" component={ReviewTest}></Route>
               <Route component={Login} />
-              <Redirect exact from="/" to="login" />
             </Switch>
           </div>
         </Router>

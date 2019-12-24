@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import MoonLoader from "react-spinners/MoonLoader";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import finishImg from "../img/finish.jpeg";
 
 import { css } from "@emotion/core";
 import styled from "styled-components";
@@ -59,6 +60,13 @@ const TextArea = styled.textarea`
 
 const HeaderPlaceholder = styled.div`
   height: 65px;
+`;
+
+const LogoContainer = styled.div`
+  height: 175px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 `;
 
 function ReviewComments({ history }) {
@@ -185,6 +193,44 @@ function ReviewComments({ history }) {
     return shuffle(notMineAndNotReviewedYet);
   };
 
+  // _____________ UI _____________________
+
+  const FinishComponent = () => {
+    return (
+      <Card
+        style={{
+          marginTop: "90px",
+          padding: "10px",
+          width: "350px",
+          background: "linear-gradient(to top, #9c27b0, orange)"
+        }}
+      >
+        <h1 style={{ fontSize: "60px", margin: "0px", color: "blueviolet" }}>
+          Wow you are amazing
+        </h1>
+        <h1 style={{ fontSize: "350px", margin: "0px" }}>🏅</h1>
+
+        <img style={{ width: "360px" }} src={finishImg} />
+
+        <h3>👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏</h3>
+        <h3>👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏</h3>
+        <h3>🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕</h3>
+        <h3>👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏</h3>
+        <h3>👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏</h3>
+        <h3>🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕</h3>
+        <h3>🔝🔝🔝🔝🔝🔝🔝🔝🔝🔝🔝🔝🔝🔝🔝🔝🔝🔝🔝</h3>
+        <h3>👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏</h3>
+        <h3>👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏</h3>
+        <h3>👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏</h3>
+        <h3>🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕</h3>
+        <h3>👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏</h3>
+        <h3>👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏</h3>
+        <h3>👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏👏</h3>
+        <h3>🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕🍕</h3>
+      </Card>
+    );
+  };
+
   const ReviewComponent = () => {
     return (
       <div>
@@ -269,6 +315,10 @@ function ReviewComments({ history }) {
       </div>
     );
   };
+
+  if (currentPercent >= 100) {
+    return <FinishComponent />;
+  }
 
   return (
     <div>

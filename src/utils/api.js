@@ -68,7 +68,13 @@ export function getSortedRanking(confessions, reviews) {
     return acc;
   }, Object.assign({}, usersObject));
 
-  const reviewsByUser = reviews.reduce((acc, review) => {
+  const confessionIds = confessions.map(conf => conf._id);
+
+  const validReviews = reviews.filter(review =>
+    confessionIds.includes(review.confessionId)
+  );
+
+  const reviewsByUser = validReviews.reduce((acc, review) => {
     const userReal = getDecryptedUser(review.userId);
     acc[userReal] = acc[userReal] + 1;
     return acc;
