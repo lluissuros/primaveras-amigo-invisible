@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import CreateComments from "./pages/CreateComments";
 import ReviewTest from "./pages/ReviewTest";
 import ReviewComments from "./pages/ReviewComments";
+import ResultsPage from "./pages/ResultsPage";
 import InfoPage from "./pages/InfoPage";
 
 toast.configure();
@@ -92,6 +93,7 @@ function App() {
                 component={CreateComments}
               />
               <PrivateRoute path="/review" component={ReviewComments} />
+              <PrivateRoute path="/results" component={ResultsPage} />
               <Route path="/test" component={ReviewTest}></Route>
               <Route component={Login} />
             </Switch>

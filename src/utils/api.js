@@ -21,6 +21,91 @@ export function getReviews() {
   });
 }
 
+function buildByConfessionId(confessions, reviews) {
+  const scoresByConfessionId = {};
+  const spamByConfessionId = {};
+  for (let i = 0; i < reviews.length; i++) {
+    const currentReview = reviews[i];
+
+    if (!getDecryptedUser(currentReview.userId).includes("@")) {
+      continue; //invalid user
+    }
+
+    if (currentReview.isSpam) {
+      //addSpam
+      spamByConfessionId[currentReview.confessionId] = spamByConfessionId[
+        currentReview.confessionId
+      ]
+        ? spamByConfessionId[currentReview.confessionId] + 1
+        : 1;
+      continue;
+    }
+
+    //add Score to Array
+    scoresByConfessionId[currentReview.confessionId] = scoresByConfessionId[
+      currentReview.confessionId
+    ]
+      ? scoresByConfessionId[currentReview.confessionId].concat(
+          currentReview.score
+        )
+      : [currentReview.score];
+  }
+
+  const cleanSpamByConfessionId = Object.entries(spamByConfessionId).reduce(
+    (acc, ent) => {
+      if (ent[1] > 1) {
+        acc[ent[0]] = ent[1];
+      }
+      return acc;
+    },
+    {}
+  );
+
+  return { scoresByConfessionId, spamByConfessionId: cleanSpamByConfessionId };
+}
+
+function byHigherScore(scoresByConfessionId) {
+  const average = arr => arr.reduce((acc, el) => acc + el, 0) / arr.length;
+  const sortedByAverage = Object.entries(scoresByConfessionId).sort(
+    (a, b) => average(b[1]) - average(a[1])
+  );
+  return sortedByAverage.map(el => {
+    return { confessionId: el[0], average: average(el[1]), scores: el[1] };
+  });
+}
+
+function byLowerScore(scoresByConfessionId) {
+  const average = arr => arr.reduce((acc, el) => acc + el, 0) / arr.length;
+  const sortedByAverage = Object.entries(scoresByConfessionId).sort(
+    (a, b) => average(a[1]) - average(b[1])
+  );
+  return sortedByAverage.map(el => {
+    return { confessionId: el[0], average: average(el[1]), scores: el[1] };
+  });
+}
+
+export function getRankedResults() {
+  return Promise.all([getConfessions(), getReviews()]).then(values => {
+    const confessions = values[0];
+    const reviews = values[1];
+    console.log(confessions);
+    console.log(reviews);
+
+    const { scoresByConfessionId, spamByConfessionId } = buildByConfessionId(
+      confessions,
+      reviews
+    );
+
+    return {
+      scoresByConfessionId,
+      spamByConfessionId,
+      byHigherScore: byHigherScore(scoresByConfessionId),
+      byLowerScore: byLowerScore(scoresByConfessionId)
+    };
+    // return {byHigherScore, byLowerScore, byMostAgreement, byLessAgreement, spam}
+  });
+}
+
 export function createConfession(text, userId = "userID MISSING") {
   const encryptedUserId = getEncryptedUser();
   console.log("test encrypted userId", encryptedUserId);
