@@ -4,6 +4,8 @@ import {
   getUsers
 } from "./AuthHelperMethods";
 
+import { mean, variance } from "./helpers";
+
 const BASE_URL = "https://primaveras-server.herokuapp.com/";
 // const BASE_URL = "http://localhost:5000/";
 
@@ -60,27 +62,24 @@ function buildByConfessionId(confessions, reviews) {
     },
     {}
   );
-
   return { scoresByConfessionId, spamByConfessionId: cleanSpamByConfessionId };
 }
 
 function byHigherScore(scoresByConfessionId) {
-  const average = arr => arr.reduce((acc, el) => acc + el, 0) / arr.length;
-  const sortedByAverage = Object.entries(scoresByConfessionId).sort(
-    (a, b) => average(b[1]) - average(a[1])
+  const sortedByMean = Object.entries(scoresByConfessionId).sort(
+    (a, b) => mean(b[1]) - mean(a[1])
   );
-  return sortedByAverage.map(el => {
-    return { confessionId: el[0], average: average(el[1]), scores: el[1] };
+  return sortedByMean.map(el => {
+    return { confessionId: el[0], mean: mean(el[1]), scores: el[1] };
   });
 }
 
-function byLowerScore(scoresByConfessionId) {
-  const average = arr => arr.reduce((acc, el) => acc + el, 0) / arr.length;
-  const sortedByAverage = Object.entries(scoresByConfessionId).sort(
-    (a, b) => average(a[1]) - average(b[1])
+function byLowerVariance(scoresByConfessionId) {
+  const sortedByVariance = Object.entries(scoresByConfessionId).sort(
+    (a, b) => variance(a[1]) - variance(b[1])
   );
-  return sortedByAverage.map(el => {
-    return { confessionId: el[0], average: average(el[1]), scores: el[1] };
+  return sortedByVariance.map(el => {
+    return { confessionId: el[0], variance: variance(el[1]), scores: el[1] };
   });
 }
 
@@ -100,9 +99,8 @@ export function getRankedResults() {
       scoresByConfessionId,
       spamByConfessionId,
       byHigherScore: byHigherScore(scoresByConfessionId),
-      byLowerScore: byLowerScore(scoresByConfessionId)
+      byHigherAgreement: byLowerVariance(scoresByConfessionId)
     };
-    // return {byHigherScore, byLowerScore, byMostAgreement, byLessAgreement, spam}
   });
 }
 

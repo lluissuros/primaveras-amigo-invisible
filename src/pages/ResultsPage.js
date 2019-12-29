@@ -56,12 +56,17 @@ function ResultsPage({ history }) {
           scoresByConfessionId,
           spamByConfessionId,
           byHigherScore,
-          byLowerScore
+          byHigherAgreement
         } = results;
+        const byLowerScore = byHigherScore.slice(0).reverse();
+        const byLessAgreement = byHigherAgreement.slice(0).reverse();
+
         console.log("results");
         console.log(results);
-        console.log(results.byHigherScore);
-        console.log(results.byLowerScore);
+        console.log(byHigherScore);
+        console.log(byLowerScore);
+        console.log(byHigherAgreement);
+        console.log(byLessAgreement);
       });
     } catch {
       setError("💩❓💩DA FUCK un error 💩❓💩");
