@@ -53,6 +53,7 @@ function ResultsPage({ history }) {
       console.log("fetching data...");
       getRankedResults().then(results => {
         const {
+          confessionsById,
           scoresByConfessionId,
           spamByConfessionId,
           byHigherScore,
@@ -61,8 +62,9 @@ function ResultsPage({ history }) {
         const byLowerScore = byHigherScore.slice(0).reverse();
         const byLessAgreement = byHigherAgreement.slice(0).reverse();
 
-        console.log("results");
+        console.log(" _______ REsults ________");
         console.log(results);
+        console.log(confessionsById);
         console.log(byHigherScore);
         console.log(byLowerScore);
         console.log(byHigherAgreement);

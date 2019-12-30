@@ -87,15 +87,19 @@ export function getRankedResults() {
   return Promise.all([getConfessions(), getReviews()]).then(values => {
     const confessions = values[0];
     const reviews = values[1];
-    console.log(confessions);
-    console.log(reviews);
 
     const { scoresByConfessionId, spamByConfessionId } = buildByConfessionId(
       confessions,
       reviews
     );
 
+    const confessionsById = confessions.reduce((acc, conf) => {
+      acc[conf._id] = conf;
+      return acc;
+    }, {});
+
     return {
+      confessionsById,
       scoresByConfessionId,
       spamByConfessionId,
       byHigherScore: byHigherScore(scoresByConfessionId),
