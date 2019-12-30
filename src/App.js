@@ -15,6 +15,7 @@ import CreateComments from "./pages/CreateComments";
 import ReviewTest from "./pages/ReviewTest";
 import ReviewComments from "./pages/ReviewComments";
 import ResultsPage from "./pages/ResultsPage";
+import FinishDummyPage from "./pages/FinishDummyPage";
 import InfoPage from "./pages/InfoPage";
 
 toast.configure();
@@ -88,12 +89,13 @@ function App() {
             <Switch>
               <Route path="/login" component={Login} />
               <Route path="/info" component={InfoPage} />
-              <PrivateRoute
-                path="/createcommments_venga_va"
+              {/* <PrivateRoute
+                path="/createcommments"
                 component={CreateComments}
-              />
-              <PrivateRoute path="/review" component={ReviewComments} />
+              /> */}
+              {/* <PrivateRoute path="/review" component={ReviewComments} /> */}
               <PrivateRoute path="/results" component={ResultsPage} />
+              <PrivateRoute path="/gracies" component={FinishDummyPage} />
               <Route path="/test" component={ReviewTest}></Route>
               <Route component={Login} />
             </Switch>

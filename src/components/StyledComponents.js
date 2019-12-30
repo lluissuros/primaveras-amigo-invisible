@@ -116,7 +116,11 @@ const GradientBox = styled.div`
     z-index: -1;
     margin: -5px; /* !importanté */
     border-radius: inherit; /* !importanté */
-    background: linear-gradient(to right, red, orange);
+    background: linear-gradient(
+      to right,
+      ${props => props.colorL || "red"},
+      ${props => props.colorR || "orange"}
+    );
   }
 `;
 

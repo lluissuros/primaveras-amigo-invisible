@@ -27,11 +27,11 @@ const Header = ({ username, onLogout, onClickInfo }) => {
             onClick={onClickInfo}
             style={{ fontSize: "29px", marginLeft: "1rem" }}
           >
-            ℹ️
+            💅
           </div>
           <div style={{ display: "flex" }}>
             <span style={{ fontSize: "10px" }}>🔥💙❤️🧡</span>
-            <h1 style={{ margin: "0px 12px" }}>{` Holi `}</h1>
+            <h1 style={{ margin: "0px 12px" }}>{` Fase3 `}</h1>
             <span style={{ fontSize: "10px" }}>💛💚💜🌶️</span>
           </div>
 

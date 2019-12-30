@@ -21,7 +21,7 @@ function Login({ history }) {
   try {
     if (loggedIn || isLoggedIn()) {
       //   return <Redirect to="/createcommments" />;
-      return <Redirect to="/review" />;
+      return <Redirect to="/results" />;
     }
   } catch (e) {}
 
@@ -32,9 +32,7 @@ function Login({ history }) {
         style={{
           fontSize: "48px",
           height: "55px",
-          width: "54px",
-          border: "5px solid #FFC107",
-          borderRadius: "20px"
+          width: "54px"
         }}
       >
         ℹ️
