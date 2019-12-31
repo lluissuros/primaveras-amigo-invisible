@@ -44,7 +44,7 @@ const HeaderPlaceholder = styled.div`
   height: 65px;
 `;
 
-function ReviewTest({ history }) {
+function SendEmailsPage({ history }) {
   const [error, setError] = useState(null);
   const [counter, setCounter] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
@@ -183,4 +183,4 @@ function ReviewTest({ history }) {
   );
 }
 
-export default ReviewTest;
+export default SendEmailsPage;

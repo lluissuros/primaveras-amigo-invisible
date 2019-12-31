@@ -49,10 +49,32 @@ const TextArea = styled.div`
   box-sizing: border-box;
 `;
 
+const createColors = () => {
+  //yes I do it with mutation SO WHAT like this they don't repeat colors
+  const colors = [
+    "red",
+    "orange",
+    "#FFDC00",
+    "#F012BE",
+    "#39CCCC",
+    "#7FDBFF",
+    "#01FF70",
+    "#85144b"
+  ];
+  const colorR = colors.splice(Math.floor(Math.random() * colors.length), 1);
+  const colorL = colors.splice(Math.floor(Math.random() * colors.length), 1);
+  return { colorR, colorL };
+};
+
 const GraciesComponent = ({ blurValue = 0 }) => {
+  const { colorR, colorL } = createColors();
   return (
     <Form style={{ marginTop: "100px", filter: `blur(${blurValue}px)` }}>
-      <GradientBox style={{ width: "100px", textAlign: "center" }}>
+      <GradientBox
+        colorR={colorR}
+        colorL={colorL}
+        style={{ width: "100px", textAlign: "center" }}
+      >
         <TextArea>GRACIES</TextArea>
       </GradientBox>
     </Form>

@@ -42,12 +42,15 @@ const overrideSpinner = css`
   background: linear-gradient(to bottom, #f44336, #673ab7);
 `;
 
-const TextArea = styled.div`
+const TextAreaResult = styled.div`
   background: transparent;
   min-width: 360px;
   font-size: 14px;
-  padding: 12px;
+  padding: 24px;
   box-sizing: border-box;
+  font-family: "Comic Sans MS";
+  white-space: pre-line;
+  text-align: justify;
 `;
 
 const selectOptions = [
@@ -115,7 +118,7 @@ const ConfessionsList = ({ confessions, results }) => {
                 colorL={colorL}
                 style={{ flexDirection: "column" }}
               >
-                <TextArea>{currentConf.text}</TextArea>
+                <TextAreaResult>{currentConf.text}</TextAreaResult>
                 <hr style={{ width: "100px" }} />
                 <div style={{ fontSize: "8px", marginBottom: "6px" }}>
                   {conf.scores.join(" , ")}
@@ -141,28 +144,32 @@ function ResultsPage({ history }) {
       //reset
       setError(null);
 
-      getRankedResults().then(results => {
-        results.byLowerScore = results.byHigherScore.slice(0).reverse();
-        results.byLessAgreement = results.byHigherAgreement.slice(0).reverse();
-        const {
-          confessionsById,
-          scoresByConfessionId,
-          spamByConfessionId,
-          byHigherScore,
-          byHigherAgreement,
-          byLowerScore,
-          byLessAgreement
-        } = results;
-        setResults(results);
+      getRankedResults()
+        .then(results => {
+          results.byLowerScore = results.byHigherScore.slice(0).reverse();
+          results.byLessAgreement = results.byHigherAgreement
+            .slice(0)
+            .reverse();
+          const {
+            confessionsById,
+            scoresByConfessionId,
+            spamByConfessionId,
+            byHigherScore,
+            byHigherAgreement,
+            byLowerScore,
+            byLessAgreement
+          } = results;
+          setResults(results);
 
-        console.log(" _______ REsults ________");
-        console.log(results);
-        console.log(confessionsById);
-        console.log(byHigherScore);
-        console.log(byLowerScore);
-        console.log(byHigherAgreement);
-        console.log(byLessAgreement);
-      });
+          console.log(" _______ REsults ________");
+          console.log(results);
+          console.log(confessionsById);
+          console.log(byHigherScore);
+          console.log(byLowerScore);
+          console.log(byHigherAgreement);
+          console.log(byLessAgreement);
+        })
+        .catch(() => setError("💩❓💩DA FUCK un error 💩❓💩"));
     } catch {
       setError("💩❓💩DA FUCK un error 💩❓💩");
     }
@@ -230,10 +237,12 @@ function ResultsPage({ history }) {
       ></Header>
       {error && <Error>{`error message: ${error} `}</Error>}
 
-      <Card style={{ marginTop: "90px", padding: "10px" }}>
+      <Card style={{ marginTop: "90px" }}>
         <h3>{selectedRankingTitle || "🏆 Selecciona criteri de ranking 🏆"}</h3>
         <Select
           style={{ margin: "20px" }}
+          inputProps={{ readOnly: true }}
+          isSearchable={false}
           label="Selecciona criteri:"
           options={selectOptions}
           styles={customSelectStyles}

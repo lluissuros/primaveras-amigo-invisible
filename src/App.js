@@ -12,7 +12,7 @@ import { ThemeProvider, createGlobalStyle } from "styled-components";
 import PrivateRoute from "./PrivateRoute";
 import Login from "./pages/Login";
 import CreateComments from "./pages/CreateComments";
-import ReviewTest from "./pages/ReviewTest";
+import SendEmailsPage from "./pages/SendEmailsPage";
 import ReviewComments from "./pages/ReviewComments";
 import ResultsPage from "./pages/ResultsPage";
 import FinishDummyPage from "./pages/FinishDummyPage";
@@ -96,7 +96,7 @@ function App() {
               {/* <PrivateRoute path="/review" component={ReviewComments} /> */}
               <PrivateRoute path="/results" component={ResultsPage} />
               <PrivateRoute path="/gracies" component={FinishDummyPage} />
-              <Route path="/test" component={ReviewTest}></Route>
+              <Route path="/test" component={SendEmailsPage}></Route>
               <Route component={Login} />
             </Switch>
           </div>
